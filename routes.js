@@ -71,7 +71,7 @@ module.exports = function (app) {
 			},
 			"context": {
 				"client_id": client_id,
-				"ip": req.ip,
+				"ip": req.headers['x-forwarded-for'] || req.connection.remoteAddress,
 				"User-Agent": req.get('User-Agent')
 			}
 		}
