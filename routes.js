@@ -33,7 +33,7 @@ module.exports = function (app) {
 		email = req.body.email
 
 		payload = {
-			"event": "$login.attempted",
+			"event": "$registration.attempted",
 			"user_traits": {
 				"email": email
 			},
