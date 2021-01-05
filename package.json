@@ -4,5 +4,12 @@
   "version": "1.0.0",
   "engines": {
     "node": "12.x"
-  }
+  },
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "engines": {
+    "node": "6.11.3"
+  },
 }
