@@ -1,11 +1,14 @@
 
-var request = require('request');
+var fs = require('fs')
+
+var request = require('request')
 
 // var session = require("express-session");
 
 //*******************************************/
 
 module.exports = function (app) {
+
 
 	app.get('/favicon.ico', function(req, res, next) {
 
@@ -15,9 +18,37 @@ module.exports = function (app) {
 	app.get('/', function(req, res, next) {
 
 		var view = {
-			castle_app_id: process.env.castle_app_id
+			castle_app_id: process.env.castle_app_id,
 		}
+
+		view.home = true
+
 		res.render('index', view)
+	})
+
+	app.get('/:demo_name', function(req, res, next) {
+
+		var demo_allowlist = [
+			"error",
+			"register"
+		]
+
+		var demo_name = req.params.demo_name
+
+		var view = {
+			castle_app_id: process.env.castle_app_id,
+		}
+
+		if (!(demo_allowlist.includes(demo_name))) {
+			view.error = true
+		}
+		else {
+			view[demo_name] = true
+		}
+
+		res.render('index', view)
+
+
 	})
 
 	//*******************************************/
