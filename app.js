@@ -1,4 +1,4 @@
-// Castle.io registration example
+// Castle.io demos
 
 var mustache_express = require('mustache-express')
 

@@ -1,9 +1,13 @@
 
-var fs = require('fs')
-
 var request = require('request')
 
-// var session = require("express-session");
+//*******************************************/
+
+var demo_allowlist = [
+	"authenticate",
+	"error",
+	"register"
+]
 
 //*******************************************/
 
@@ -28,11 +32,6 @@ module.exports = function (app) {
 
 	app.get('/:demo_name', function(req, res, next) {
 
-		var demo_allowlist = [
-			"error",
-			"register"
-		]
-
 		var demo_name = req.params.demo_name
 
 		var view = {
@@ -43,16 +42,17 @@ module.exports = function (app) {
 			view.error = true
 		}
 		else {
-			view[demo_name] = true
+			view.show_form = true
+			view.workflow = demo_name
+			// view[demo_name] = true
 		}
 
 		res.render('index', view)
-
 	})
 
 	//*******************************************/
 
-	app.post('/evaluate_reg_form', function(req, res) {
+	app.post('/evaluate_form_vals', function(req, res) {
 
 		console.log("received a submission.")
 		console.log("the ip address is: " + req.ip)
@@ -65,7 +65,7 @@ module.exports = function (app) {
 		email = req.body.email
 
 		payload = {
-			"event": "$registration.attempted",
+			// "event": "$registration.attempted",
 			"user_traits": {
 				"email": email
 			},
@@ -74,6 +74,13 @@ module.exports = function (app) {
 				"ip": req.headers['x-forwarded-for'] || req.connection.remoteAddress,
 				"User-Agent": req.get('User-Agent')
 			}
+		}
+
+		if (req.body.workflow == "register") {
+			payload.event = "$registration.attempted"
+		}
+		else if (req.body.workflow == "authenticate") {
+			payload.event = "$login.attempted"
 		}
 
 		var authz_string = "Basic " + Buffer.from(":" + process.env.castle_api_secret).toString('base64')
