@@ -48,7 +48,6 @@ module.exports = function (app) {
 
 		res.render('index', view)
 
-
 	})
 
 	//*******************************************/
@@ -56,6 +55,8 @@ module.exports = function (app) {
 	app.post('/evaluate_reg_form', function(req, res) {
 
 		console.log("received a submission.")
+		console.log("the ip address is: " + req.ip)
+		console.log(req.connection.remoteAddress)
 
 		console.dir(req.body)
 
@@ -70,8 +71,8 @@ module.exports = function (app) {
 			},
 			"context": {
 				"client_id": client_id,
-				"ip": "127.0.0.1",
-				"User-Agent":"Mozilla/5.0 (Windows NT 6.3; Trident/7.0; rv:11.0) like Gecko"
+				"ip": req.ip,
+				"User-Agent": req.get('User-Agent')
 			}
 		}
 
@@ -88,10 +89,17 @@ module.exports = function (app) {
 		}
 
 		request(options, function (error, response) {
-			if (error) throw new Error(error);
-			console.log(response.body);
+			if (error) throw new Error(error)
+			console.log(response.body)
+
+			var r = {}
+
+			r.payload = payload
+			r.result = JSON.parse(response.body)
+
+			res.json(r)
+
 		})
 
-		res.json({"result": "success"})
 	})
 }

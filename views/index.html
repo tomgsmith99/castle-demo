@@ -36,7 +36,10 @@
 				data: JSON.stringify(user_data),
 				processData: false,
 				success: function( data, textStatus, jQxhr ){
-					$("#ui").html("<pre>" + JSON.stringify(data) + "</pre>")
+					$("#ui_form").hide()
+					$("#results_table").show()
+					$("#payload").html("<pre>" + JSON.stringify(data.payload, null, 1) + "</pre>")
+					$("#result").html("<pre>" + JSON.stringify(data.result, null, 1) + "</pre>")
 				},
 				error: function( jqXhr, textStatus, errorThrown ){
 					console.log( errorThrown )
@@ -80,16 +83,31 @@
 			{{/error}}
 
 			{{#home}}
-			<p class="lead">Welcome to castle demos. Please choose a demo from the demo menu!</p>
+			<p class="lead">Welcome to Castle demos!</p>
+			<p class="lead">Please choose a demo from the navbar drop-down.</p>
 			{{/home}}
 
 			{{#register}}
-			<p class="lead">Please register!</p>
-			<p>email: <input type = "text" size = 25 id = "email"></p>
-			<p>password: <input type = "password" size = 25 id = "password"></p>
-			<p><button id="register" onclick="evaluate_reg_form()">register</button></p>
+			<p class="lead">Register</p>
+			<div id = "ui_form">
+				<p>email: <input type = "text" size = 25 id = "email"></p>
+				<p>password: <input type = "password" size = 25 id = "password"></p>
+				<p><button id="register" onclick="evaluate_reg_form()">register</button></p>
+			</div>
 			{{/register}}
 
+			<div id = "results_table" style = "display: none">
+				<table border = 1>
+					<tr>
+						<td style="font-weight: bold">payload</td>
+						<td id = "payload"></td>
+					</tr>
+					<tr>
+						<td style="font-weight: bold">result from castle</td>
+						<td id = "result"></td>
+					</tr>
+				</table>
+			</div>
 		</div>
 
 	</main><!-- /.container -->
