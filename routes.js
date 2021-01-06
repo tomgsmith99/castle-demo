@@ -15,22 +15,11 @@ var demo_allowlist = [
 module.exports = function (app) {
 
 	app.get('/favicon.ico', function(req, res, next) {
-
 		res.sendStatus(200)
 	})
 
 	app.get('/', function(req, res, next) {
-
-		var view = {
-			castle_app_id: process.env.castle_app_id,
-		}
-
-		if (process.env.local) {
-			view.location = "local"
-		}
-		else {
-			view.location = "heroku"
-		}
+		var view = get_view()
 
 		view.home = true
 
@@ -41,16 +30,7 @@ module.exports = function (app) {
 
 		var demo_name = req.params.demo_name
 
-		var view = {
-			castle_app_id: process.env.castle_app_id,
-		}
-
-		if (process.env.local) {
-			view.location = "local"
-		}
-		else {
-			view.location = "heroku"
-		}
+		var view = get_view()
 
 		if (!(demo_allowlist.includes(demo_name))) {
 			view.error = true
@@ -58,7 +38,6 @@ module.exports = function (app) {
 		else {
 			view.show_form = true
 			view.workflow = demo_name
-			// view[demo_name] = true
 		}
 
 		if (demo_name == "register" || demo_name == "authenticate") {
@@ -126,8 +105,22 @@ module.exports = function (app) {
 			r.result = JSON.parse(response.body)
 
 			res.json(r)
-
 		})
-
 	})
+}
+
+function get_view() {
+	var view = {
+		castle_app_id: process.env.castle_app_id
+	}
+
+	if (process.env.local) {
+		view.location = "local"
+	}
+	else {
+		view.location = "heroku"
+	}
+
+	return view
+
 }
