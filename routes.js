@@ -6,13 +6,13 @@ var request = require('request')
 var demo_allowlist = [
 	"authenticate",
 	"error",
+	"forgot_password",
 	"register"
 ]
 
 //*******************************************/
 
 module.exports = function (app) {
-
 
 	app.get('/favicon.ico', function(req, res, next) {
 
@@ -23,6 +23,13 @@ module.exports = function (app) {
 
 		var view = {
 			castle_app_id: process.env.castle_app_id,
+		}
+
+		if (process.env.local) {
+			view.location = "local"
+		}
+		else {
+			view.location = "heroku"
 		}
 
 		view.home = true
@@ -38,6 +45,13 @@ module.exports = function (app) {
 			castle_app_id: process.env.castle_app_id,
 		}
 
+		if (process.env.local) {
+			view.location = "local"
+		}
+		else {
+			view.location = "heroku"
+		}
+
 		if (!(demo_allowlist.includes(demo_name))) {
 			view.error = true
 		}
@@ -45,6 +59,10 @@ module.exports = function (app) {
 			view.show_form = true
 			view.workflow = demo_name
 			// view[demo_name] = true
+		}
+
+		if (demo_name == "register" || demo_name == "authenticate") {
+			view.password_field = true
 		}
 
 		res.render('index', view)
@@ -81,6 +99,9 @@ module.exports = function (app) {
 		}
 		else if (req.body.workflow == "authenticate") {
 			payload.event = "$login.attempted"
+		}
+		else if (req.body.workflow == "forgot_password") {
+			payload.event = "$password_reset_request.attempted"
 		}
 
 		var authz_string = "Basic " + Buffer.from(":" + process.env.castle_api_secret).toString('base64')

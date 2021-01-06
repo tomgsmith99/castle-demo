@@ -1,6 +1,9 @@
 <html>
 
 <head>
+
+	<title>Castle demos - {{location}}</title>
+
 	<script src="https://d2t77mnxyo7adj.cloudfront.net/v1/c.js?{{castle_app_id}}"></script>
 
 	<link rel="icon" type="image/x-icon" href="https://castle.io/favicon-32x32.png"/>
@@ -17,14 +20,19 @@
 		function evaluate_form_vals() {
 
 			var email = $("#email").val()
-			var password = $("#password").val()
+
 			var clientId = _castle('getClientId')
+
+			var workflow = "{{workflow}}"
 
 			var user_data = {
 				email: email,
-				password: password,
 				clientId: clientId,
-				workflow: "{{workflow}}"
+				workflow: workflow
+			}
+
+			if (workflow == "register" || workflow == "authenticate") {
+				user_data.password = $("#password").val()
 			}
 
 			console.log("the castle client id is: " + clientId)
@@ -67,8 +75,8 @@
 			<a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Demos</a>
 			<div class="dropdown-menu" aria-labelledby="dropdown01">
 				<a class="dropdown-item" href="/authenticate">Authenticate</a>
+				<a class="dropdown-item" href="/forgot_password">Forgot password</a>
 				<a class="dropdown-item" href="/register">Register</a>
-				<a class="dropdown-item" href="#">Something else here</a>
 			</div>
 		  </li>
 		</ul>
@@ -92,7 +100,9 @@
 			<p class="lead">{{workflow}}</p>
 			<div id = "ui_form">
 				<p>email: <input type = "text" size = 25 id = "email"></p>
+				{{#password_field}}
 				<p>password: <input type = "password" size = 25 id = "password"></p>
+				{{/password_field}}
 				<p><button onclick="evaluate_form_vals()">go</button></p>
 			</div>
 			{{/show_form}}
