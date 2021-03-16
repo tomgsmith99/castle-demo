@@ -23,7 +23,7 @@ module.exports = function (app) {
 
 		view.home = true
 
-		res.render('index', view)
+		res.render('base', view)
 	})
 
 	app.get('/cloudfront', function(req, res, next) {
@@ -47,28 +47,28 @@ module.exports = function (app) {
 
 	})
 
-	app.get('/:demo_name', function(req, res, next) {
-
-		var demo_name = req.params.demo_name
-
-		var view = get_view()
-
-		if (!(demo_allowlist.includes(demo_name))) {
-			view.error = true
-		}
-		else {
-			view.show_form = true
-			view.workflow = demo_name
-		}
-
-		if (demo_name == "register" || demo_name == "authenticate") {
-			view.password_field = true
-		}
-
-		res.render('index', view)
-	})
-
 	//*******************************************/
+
+	app.post('/cloudfront', function(req, res) {
+
+		console.dir(req.body)
+
+		var options = {
+			'method': 'POST',
+			'url': process.env.cloudfront_url + '/register',
+			'headers': {
+		    	"Content-Type": "application/x-www-form-urlencoded"
+			},
+			form: req.body
+		}
+
+		request(options, function (error, response) {
+			if (error) throw new Error(error)
+			console.log(response.body)
+
+			res.json(response.body)
+		})
+	})
 
 	app.post('/evaluate_form_vals', function(req, res) {
 

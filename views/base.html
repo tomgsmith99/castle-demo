@@ -4,9 +4,7 @@
 
 	<title>Castle code samples - {{location}}</title>
 
-<!-- 	<script src="https://d2t77mnxyo7adj.cloudfront.net/v1/c.js?{{castle_app_id}}"></script>
- -->
-	<script src="https://d2t77mnxyo7adj.cloudfront.net/v1/Castle.js?{{castle_app_id}}"></script>
+	<script src="https://d2t77mnxyo7adj.cloudfront.net/v1/c.js?{{castle_app_id}}"></script>
 
 	<script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
 
@@ -24,29 +22,6 @@
 		{{> cloudfront_js }}
 	{{/cloudfront}}
 
-	<script type="text/javascript">
-
-		function get_table_row(label, data, is_json = false) {
-
-			var row = '<tr>'
-
-			row += '<td style="font-weight: bold">' + label + '</td>'
-
-			row += '<td style = "padding-left: 5">'
-
-			if (is_json) {
-				row += '<pre>' + JSON.stringify(data, null, 1) + '</pre>'
-			}
-			else {
-				row += data
-			}
-
-			row += '</td></tr>'
-
-			return row
-		}
-
-	</script>
 </head>
 
 <body>
@@ -78,6 +53,11 @@
 
 		<div id = "main_ui" class = "row">
 			<div id = "left_col" class = "col-sm-6">
+
+				{{#home}}
+				<p class="lead">Welcome to Castle code examples</p>
+				<p class="lead">Please choose an example from the navbar drop-down.</p>
+				{{/home}}
 
 				<p>{{example_name}}</p>
 
