@@ -32,6 +32,7 @@ module.exports = function (app) {
 
 		view.cloudfront = true
 		view.cloudfront_url = process.env.cloudfront_url
+		view.cloudfront_path = process.env.cloudfront_path
 		view.example_name = "Castle integration with AWS Cloudfront/Lambda@Edge"
 		view.github_url = "https://github.com/castle/castle-aws-cloudfront-sample"
 
