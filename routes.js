@@ -26,6 +26,27 @@ module.exports = function (app) {
 		res.render('index', view)
 	})
 
+	app.get('/cloudfront', function(req, res, next) {
+
+		var view = get_view()
+
+		view.cloudfront = true
+		view.cloudfront_url = process.env.cloudfront_url
+		view.example_name = "Castle integration with AWS Cloudfront/Lambda@Edge"
+		view.github_url = "https://github.com/castle/castle-aws-cloudfront-sample"
+
+		res.render('base', view)
+
+	})
+
+	app.get('/test', function(req, res, next) {
+
+		var view = {test: "no way"}
+
+		res.render('base', view)
+
+	})
+
 	app.get('/:demo_name', function(req, res, next) {
 
 		var demo_name = req.params.demo_name
@@ -114,13 +135,12 @@ function get_view() {
 		castle_app_id: process.env.castle_app_id
 	}
 
-	if (process.env.local) {
-		view.location = "local"
+	if (process.env.location) {
+		view.location = process.env.location
 	}
 	else {
-		view.location = "heroku"
+		view.location = ""
 	}
 
 	return view
-
 }

@@ -1,0 +1,38 @@
+<script>
+
+	$.ajax({
+  		url: 'https://randomuser.me/api/',
+  		dataType: 'json',
+  		success: function(data) {
+    		$("#username").val(data.results[0].email)
+    		$("#password").val(data.results[0].login.password)
+  		}
+	});
+
+	function cloudfront() {
+
+		const client_id = _castle('getClientId');
+
+		console.log(client_id)
+
+		var settings = {
+		  "url": "https://d2y39zr0c1v9zb.cloudfront.net/register",
+		  "method": "POST",
+		  "timeout": 0,
+		  "headers": {
+		    "Content-Type": "application/x-www-form-urlencoded"
+		  },
+		  "data": {
+		  	"username": $("#username").val(),
+		  	"password": $("#password").val(),
+		    "client_id": client_id
+		  }
+		};
+
+		$.ajax(settings).done(function (response) {
+		  console.log(response);
+		  var y = new JsonEditor('#response_from_castle', getJson(JSON.stringify(response)));
+		});
+	}
+
+</script>
